@@ -51,3 +51,40 @@ exports.loginUser = async (req, res) => {
         token: generateToken(userExists._id),
     });
 };
+
+
+// Actualización de usuario usando el correo electrónico
+exports.updateUser = async (req, res) => {
+    const { email, name, password } = req.body; // Se toma el email del cuerpo de la solicitud
+
+    try {
+        const user = await User.findOne({ email }); // Buscar usuario por email
+        if (!user) {
+            return res.status(404).json({ message: "Usuario no encontrado 😢" });
+        }
+
+        // Verificar si el nuevo email ya está en uso por otro usuario
+        if (email && email !== user.email) {
+            const emailExists = await User.findOne({ email });
+            if (emailExists) {
+                return res.status(400).json({ message: "El email ya está en uso por otro usuario 🥹" });
+            }
+        }
+
+        user.name = name || user.name;
+        if (password) {
+            user.password = password; // Actualiza la contraseña solo si se pasa en el cuerpo de la solicitud
+        }
+
+        const updatedUser = await user.save();
+
+        return res.status(200).json({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            token: generateToken(updatedUser._id),
+        });
+    } catch (err) {
+        return res.status(500).json({ message: "Error al actualizar el usuario 😢 Error:" + err });
+    }
+};
