@@ -5,7 +5,7 @@ import '../models/user.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 
 class AuthService {
-  final String baseUrl = 'http://192.168.56.1:5000/api/auth';  // Cambiar si es necesario
+  final String baseUrl = 'http://192.168.1.75:5000/api/auth';  // Cambiar si es necesario
 
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
