@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_flutter/viewmodels/auth_viewmodel.dart';
+import 'package:app_flutter/views/user/update_screen.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -51,10 +52,18 @@ class _ProfileViewState extends State<ProfileView> {
               children: [
                 ElevatedButton.icon(
                   onPressed: () {
-                    print('ElevatedButton presionado');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UpdateScreen(
+                          name: authViewModel.user?.name ?? '', // Pasa el nombre del usuario
+                          email: authViewModel.user?.email ?? '', // Pasa el email del usuario
+                        ),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white, backgroundColor: Colors.purple,
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                     textStyle: TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),

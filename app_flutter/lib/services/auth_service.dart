@@ -46,6 +46,28 @@ class AuthService {
     }
   }
 
+
+  Future<Map<String, dynamic>> update(String email,String name, String password) async {
+    try {
+      final response = await http.put(
+        Uri.parse('$baseUrl/update'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(<String, String>{
+          'email': email,
+          'name': name,
+          'password': password,
+        }),
+      );
+      return _processResponse(response);
+    } catch (e) {
+      print('Error en Flutter (update): $e');  // Error en consola de Flutter
+      return {'success': false, 'message': 'Error in update'};
+    }
+  }
+
+
   Map<String, dynamic> _processResponse(http.Response response) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {

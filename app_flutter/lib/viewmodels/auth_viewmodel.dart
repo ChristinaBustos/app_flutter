@@ -48,6 +48,21 @@ class AuthViewModel extends ChangeNotifier {
     _setLoading(false);
   }
 
+  Future<void> update(String email, String name, String password) async {
+    _setLoading(true);
+    _setErrorMessage(null);
+    
+    final response = await _authService.update(name, email, password);
+    if(response['success']){
+      _user = User.fromJson(response['Data']);
+      await _authService.saveUser(user!);
+      print('Actualización exitosa: ${_user!.name}');
+    }else{
+      _setErrorMessage(response['message']);
+      print('Error en Flutter (update): ${response['message']}');
+    }
+  }
+
   Future<void> checkSession() async {
     _loading=true;
     notifyListeners();
